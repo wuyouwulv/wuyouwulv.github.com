@@ -2,11 +2,8 @@ var audio = document.createElement("audio");
 	
 function choose_music() {
 	var id = Math.floor(Math.random()*2);
-	var music_arr = new Array(2);
-	music_arr[0] = "music/慢慢来比较快 - 梁静茹.mp3";
-	music_arr[1] = "music/七里香 - 周杰伦.mp3";
-	// music_arr[] = "music/";
-	return music_arr[id];
+	var music_path = "music/" + id + ".mp3";
+	return music_path;
 }
 			
 function play_music() {
