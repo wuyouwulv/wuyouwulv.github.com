@@ -1,14 +1,14 @@
-/*
-ĞèÒªÔÚ html Ò³ÃæÖĞÓĞÒ»¾ä£º
+ï»¿/*
+éœ€è¦åœ¨ html é¡µé¢ä¸­æœ‰ä¸€å¥ï¼š
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-ÒÔ»ñµÃip¼°µØÀíÎ»ÖÃĞÅÏ¢
+ä»¥è·å¾—ipåŠåœ°ç†ä½ç½®ä¿¡æ¯
 */
-var ip = returnCitySN["cip"]; //ipµØÖ·
-var id = returnCitySN["cid"]; //Éí·İÖ¤±àºÅÇ°6Î»
-var name = returnCitySN["cname"]; //ËùÊôµØ
+var ip = returnCitySN["cip"]; //ipåœ°å€
+var id = returnCitySN["cid"]; //èº«ä»½è¯ç¼–å·å‰6ä½
+var name = returnCitySN["cname"]; //æ‰€å±åœ°
 
 var more_info = "https://www.baidu.com/s?wd=" + name;
-var welcome = ip + "µÄÓÃ»§";
+var welcome = ip + "çš„ç”¨æˆ·";
 
 document.write("<p>" + welcome + "</p><br />");
-document.write('<a href="' + more_info + '" target="_blank">²éÕÒ<span style="color:orange;">' + name + '</span>¸½½üÓĞÈ¤µÄÊÂ</a>');
+document.write('<a href="' + more_info + '" target="_blank">æŸ¥æ‰¾<span style="color:orange;">' + name + '</span>é™„è¿‘æœ‰è¶£çš„äº‹</a>');
