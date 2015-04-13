@@ -1,7 +1,7 @@
 var audio = document.createElement("audio");
 	
 function choose_music() {
-	var id = Math.floor(Math.random()*2);
+	var id = Math.floor(Math.random()*12);
 	var music_path = "music/" + id + ".mp3";
 	return music_path;
 }
