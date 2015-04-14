@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html>
 
 <head>
@@ -9,7 +9,7 @@
 
 <body>
 	<header>
-		<h1>ÎŞÓÇÎŞÂÇ</h1>
+		<h1>æ— å¿§æ— è™‘</h1>
 		<h2>Subtitle</h2>
 		<h4>wuyouwulv's blog</h4>
 	</header>
@@ -17,13 +17,13 @@
 	<div id="container">
 		<nav>
 			<h3>Nav</h3>
-			<a href="../index.html">»Øµ½Ö÷Ò³</a>
-			<a href="index.html">»Øµ½ÈÕÖ¾Ä¿Â¼</a>
+			<a href="../index.html">å›åˆ°ä¸»é¡µ</a>
+			<a href="index.html">å›åˆ°æ—¥å¿—ç›®å½•</a>
 		</nav>
 		<section>
 			<article id="1">
 				<header>
-					<h1>&lt;HTML5Ê¹ÓÃSelectors API¼ò»¯Ñ¡È¡²Ù×÷&gt;</h1>
+					<h1>&lt;HTML5ä½¿ç”¨Selectors APIç®€åŒ–é€‰å–æ“ä½œ&gt;</h1>
 				</header>
 				<style type="text/css">
 				  td {
@@ -53,12 +53,12 @@
 				  </tr>
 				</table>
 				<p>Focus the button, hover over the table cells, and hit Enter to identify them using querySelector('td:hover').</p>
-				<p>Êó±êµã»÷ÏÂÃæÕâ¸ö°´¼ü£¬Ê¹µÃµ±Ç°¾Û½¹ÔÚÏÂÃæÕâ¸ö°´¼ü£¬È»ºó½«Êó±êÒÆµ½ÉÏÃæµÄ±í¸ñÖĞ£¬°´ÏÂ¼üÅÌ¡°ENTER¡±¼ü¿´Ğ§¹û¡£</p>
+				<p>é¼ æ ‡ç‚¹å‡»ä¸‹é¢è¿™ä¸ªæŒ‰é”®ï¼Œä½¿å¾—å½“å‰èšç„¦åœ¨ä¸‹é¢è¿™ä¸ªæŒ‰é”®ï¼Œç„¶åå°†é¼ æ ‡ç§»åˆ°ä¸Šé¢çš„è¡¨æ ¼ä¸­ï¼ŒæŒ‰ä¸‹é”®ç›˜â€œENTERâ€é”®çœ‹æ•ˆæœã€‚</p>
 				<button type="button" id="findHover" autofocus>Find 'td:hover' target</button>
 				<div id="hoverResult">haha</div>
 				<script type="text/javascript">
 					document.getElementById("findHover").onclick = function() {
-						// ÕÒ³öÒ³ÃæÖĞµÄµ¥Ôª¸ñ
+						// æ‰¾å‡ºé¡µé¢ä¸­çš„å•å…ƒæ ¼
 						var hovered = document.querySelector("td:hover");
 						if(hovered) {
 							document.getElementById("hoverResult").innerHTML = hovered.innerHTML;
@@ -66,12 +66,12 @@
 					}
 				</script>
 				<footer>
-					<h2>&lt;/HTML5Ê¹ÓÃSelectors API¼ò»¯Ñ¡È¡²Ù×÷&gt</h2>
+					<h2>&lt;/HTML5ä½¿ç”¨Selectors APIç®€åŒ–é€‰å–æ“ä½œ&gt</h2>
 				</footer>
 			</article>
 			<article id="2">
 				<header>
-					<h1>&lt;HTML5¼ì²éä¯ÀÀÆ÷¶ÔcanvasµÄÖ§³ÖÇé¿ö&gt;</h1>
+					<h1>&lt;HTML5æ£€æŸ¥æµè§ˆå™¨å¯¹canvasçš„æ”¯æŒæƒ…å†µ&gt;</h1>
 				</header>
 				<div id="canvas_support"></div>
 				<script type="text/javascript">
@@ -85,33 +85,33 @@
 					}
 				</script>
 				<footer>
-					<h2>&lt;/HTML5¼ì²éä¯ÀÀÆ÷¶ÔcanvasµÄÖ§³ÖÇé¿ö&gt;</h2>
+					<h2>&lt;/HTML5æ£€æŸ¥æµè§ˆå™¨å¯¹canvasçš„æ”¯æŒæƒ…å†µ&gt;</h2>
 				</footer>
 			</article>
 			<article id="3">
 				<header>
-					<h1>&lt;HTML5ÓÃcanvas»æÖÆÏßÌõ&gt;</h1>
+					<h1>&lt;HTML5ç”¨canvasç»˜åˆ¶çº¿æ¡&gt;</h1>
 				</header>
 				<canvas id="diagonal" style="border: 1px solid;" width="200" height="200"></canvas>
 				<script>
 				  function drawDiagonal() {
-					// È¡µÃcanvasÔªËØ¼°Æä»æÍ¼ÉÏÏÂÎÄ
+					// å–å¾—canvaså…ƒç´ åŠå…¶ç»˜å›¾ä¸Šä¸‹æ–‡
 					var canvas = document.getElementById('diagonal');
 					var context = canvas.getContext('2d');
 					
-					// ÓÃ¾ø¶Ô×ø±êÀ´´´½¨Ò»ÌõÂ·¾¶
+					// ç”¨ç»å¯¹åæ ‡æ¥åˆ›å»ºä¸€æ¡è·¯å¾„
 					context.beginPath();
 					context.moveTo(70, 140);
 					context.lineTo(140, 70);
 					
-					// ½«ÕâÌõÏß»áÖªµÀcanvasÉÏ
+					// å°†è¿™æ¡çº¿ä¼šçŸ¥é“canvasä¸Š
 					context.stroke();
 				  }
 				  
 				  window.addEventListener("load", drawDiagonal, true);
 				</script>
 				<footer>
-					<h2>&lt;/HTML5ÓÃcanvas»æÖÆÏßÌõ&gt;</h2>
+					<h2>&lt;/HTML5ç”¨canvasç»˜åˆ¶çº¿æ¡&gt;</h2>
 				</footer>
 			</article>
 			<article>
