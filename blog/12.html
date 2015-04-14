@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta harset="utf-8">
+	<title>HTML5</title>
+	<link rel="stylesheet" href="css/css1.css">
+</head>
+
+<body>
+	<header>
+		<h1>无忧无虑</h1>
+		<h2>Subtitle</h2>
+		<h4>wuyouwulv's blog</h4>
+	</header>
+	
+	<div id="container">
+		<nav>
+			<h3>Nav</h3>
+			<a href="../index.html">回到主页</a>
+			<a href="index.html">回到日志目录</a>
+		</nav>
+		<section>
+			<article id="1">
+				<header>
+					<h1>&lt;HTML5使用Selectors API简化选取操作&gt;</h1>
+				</header>
+				<style type="text/css">
+				  td {
+					border-style: solid;
+					border-width: 1px;
+					font-size: 300%;
+				  }
+				  
+				  td {
+					background-color: cyan;
+				  }
+				  
+				  #hoverResult {
+					color: green;
+					font-size: 200%;
+				  }
+				</style>
+				<table>
+				  <tr>
+				    <td>A1</td> <td>A2</td> <td>A3</td>
+				  </tr>
+				  <tr>
+				    <td>B1</td> <td>B2</td> <td>B3</td>
+				  </tr>
+				  <tr>
+				    <td>C1</td> <td>C2</td> <td>C3</td>
+				  </tr>
+				</table>
+				<p>Focus the button, hover over the table cells, and hit Enter to identify them using querySelector('td:hover').</p>
+				<p>鼠标点击下面这个按键，使得当前聚焦在下面这个按键，然后将鼠标移到上面的表格中，按下键盘“ENTER”键看效果。</p>
+				<button type="button" id="findHover" autofocus>Find 'td:hover' target</button>
+				<div id="hoverResult">haha</div>
+				<script type="text/javascript">
+					document.getElementById("findHover").onclick = function() {
+						// 找出页面中的单元格
+						var hovered = document.querySelector("td:hover");
+						if(hovered) {
+							document.getElementById("hoverResult").innerHTML = hovered.innerHTML;
+						}
+					}
+				</script>
+				<footer>
+					<h2>&lt;/HTML5使用Selectors API简化选取操作&gt</h2>
+				</footer>
+			</article>
+			<article id="2">
+				<header>
+					<h1>&lt;HTML5检查浏览器对canvas的支持情况&gt;</h1>
+				</header>
+				<div id="canvas_support"></div>
+				<script type="text/javascript">
+					try {
+						document.createElement("canvas").getContext("2d");
+						document.getElementById("canvas_support").innerHTML = 
+							"HTML5 Canvas is supported in your browser.";
+					} catch (e) {
+						document.getElementById("canvas_support").innerHTML =
+							"HTML5 Canvas is not supported in your browser.";
+					}
+				</script>
+				<footer>
+					<h2>&lt;/HTML5检查浏览器对canvas的支持情况&gt;</h2>
+				</footer>
+			</article>
+			<article id="3">
+				<header>
+					<h1>&lt;HTML5用canvas绘制线条&gt;</h1>
+				</header>
+				<canvas id="diagonal" style="border: 1px solid;" width="200" height="200"></canvas>
+				<script>
+				  function drawDiagonal() {
+					// 取得canvas元素及其绘图上下文
+					var canvas = document.getElementById('diagonal');
+					var context = canvas.getContext('2d');
+					
+					// 用绝对坐标来创建一条路径
+					context.beginPath();
+					context.moveTo(70, 140);
+					context.lineTo(140, 70);
+					
+					// 将这条线会知道canvas上
+					context.stroke();
+				  }
+				  
+				  window.addEventListener("load", drawDiagonal, true);
+				</script>
+				<footer>
+					<h2>&lt;/HTML5用canvas绘制线条&gt;</h2>
+				</footer>
+			</article>
+			<article>
+				<header>
+					<h1>Article Header</h1>
+				</header>
+				<p></p>
+				<footer>
+					<h2>Article Footer</h2>
+				</footer>
+			</article>
+		</section>
+		<aside>
+			<h3>Aside</h3>
+			<p>Here is the content of aside.</p>
+		</aside>
+		<footer>
+			<h2>Footer</h2>
+		</footer>
+	</div>
+</body>
+</html>
