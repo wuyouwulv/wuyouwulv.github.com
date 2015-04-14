@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>Java创建文件与目录</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<script type="text/javascript" src="js/changebkg.js"></script>
+	<div class="container">
+		<section id="main_content">
+
+<h3>Java创建文件与目录</h3>
+
+<p>FileCreate类的createFile方法用于创建一个新文件。</p>
+<p>file.mkdirs()方式可用于递归地创建目录。</p>
+<p>main方法用于测试。</p>
+<pre><code><span style="color: #0000FF; ">import</span>&nbsp;java.io.File;
+<span style="color: #0000FF; ">import</span>&nbsp;java.io.IOException;
+
+<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">class</span>&nbsp;FileCreate&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;createFile(String&nbsp;path,&nbsp;String&nbsp;filename)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;file&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;File(path);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(!file.exists())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file.mkdirs();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;File(path,&nbsp;filename);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(!file.exists())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file.createNewFile();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;createFile("D:\\test",&nbsp;"hello.txt");
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}</code></pre>
+		</section>
+	</div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>Java获取图片中某一点的RGB</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<script type="text/javascript" src="js/changebkg.js"></script>
+	<div class="container">
+		<section id="main_content">
+
+<h3>Java获取图片中某一点的RGB</h3>
+<p>之前我在ScreenDemo类中用generateSnapshot()方法实现了<a href="6.html" target="_blank">对当前屏幕的截图</a>,这里在原来的基础上增加了printPointRGB方法用于获取屏幕上的某一点的RGB。</p>
+
+<pre><code><span style="color: #0000FF; ">import</span>&nbsp;java.awt.Color;
+<span style="color: #0000FF; ">import</span>&nbsp;java.awt.Rectangle;
+<span style="color: #0000FF; ">import</span>&nbsp;java.awt.Robot;
+<span style="color: #0000FF; ">import</span>&nbsp;java.awt.Toolkit;
+<span style="color: #0000FF; ">import</span>&nbsp;java.awt.image.BufferedImage;
+<span style="color: #0000FF; ">import</span>&nbsp;java.io.File;
+<span style="color: #0000FF; ">import</span>&nbsp;java.io.IOException;
+
+<span style="color: #0000FF; ">import</span>&nbsp;javax.imageio.ImageIO;
+
+
+<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">class</span>&nbsp;ScreenDemo&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;File&nbsp;generateSnapshot()&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">File&nbsp;snapshotFile&nbsp;=&nbsp;new&nbsp;File("D:/"&nbsp;+&nbsp;System.currentTimeMillis()&nbsp;+&nbsp;".jpg");</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;snapshotFile&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;File("D:/snapshot.jpg");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;width&nbsp;=&nbsp;(<span style="color: #0000FF; ">int</span>)&nbsp;Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;height&nbsp;=&nbsp;(<span style="color: #0000FF; ">int</span>)&nbsp;Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Robot&nbsp;robot;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;robot&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;Robot();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedImage&nbsp;image&nbsp;=&nbsp;robot.createScreenCapture(<span style="color: #0000FF; ">new</span>&nbsp;Rectangle(width,&nbsp;height));&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImageIO.write(image,&nbsp;"jpg",&nbsp;snapshotFile);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #0000FF; ">catch</span>&nbsp;(Exception&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;snapshotFile;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">/**</span><span style="color: #008000; ">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;取得图像上指定位置像素的&nbsp;rgb&nbsp;颜色分量。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;</span><span style="color: #808080; ">@param</span><span style="color: #008000; ">&nbsp;image&nbsp;源图像。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;</span><span style="color: #808080; ">@param</span><span style="color: #008000; ">&nbsp;x&nbsp;图像上指定像素位置的&nbsp;x&nbsp;坐标。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;</span><span style="color: #808080; ">@param</span><span style="color: #008000; ">&nbsp;y&nbsp;图像上指定像素位置的&nbsp;y&nbsp;坐标。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;</span><span style="color: #808080; ">@return</span><span style="color: #008000; ">&nbsp;返回包含&nbsp;rgb&nbsp;颜色分量值的数组。元素&nbsp;index&nbsp;由小到大分别对应&nbsp;r，g，b。
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">*/</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">int</span>[]&nbsp;getRGB(BufferedImage&nbsp;image,&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;x,&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;y)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>[]&nbsp;rgb&nbsp;=&nbsp;<span style="color: #0000FF; ">null</span>;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>&nbsp;(image&nbsp;!=&nbsp;<span style="color: #0000FF; ">null</span>&nbsp;&amp;&amp;&nbsp;x&nbsp;&lt;&nbsp;image.getWidth()&nbsp;&amp;&amp;&nbsp;y&nbsp;&lt;&nbsp;image.getHeight())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rgb&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;<span style="color: #0000FF; ">int</span>[3];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;pixel&nbsp;=&nbsp;image.getRGB(x,&nbsp;y);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rgb[0]&nbsp;=&nbsp;(pixel&nbsp;&amp;&nbsp;0xff0000)&nbsp;&gt;&gt;&nbsp;16;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rgb[1]&nbsp;=&nbsp;(pixel&nbsp;&amp;&nbsp;0xff00)&nbsp;&gt;&gt;&nbsp;8;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rgb[2]&nbsp;=&nbsp;(pixel&nbsp;&amp;&nbsp;0xff);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;rgb;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">/**</span><span style="color: #008000; ">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;将RGB转换为16进制Hex
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;</span><span style="color: #808080; ">@param</span><span style="color: #008000; ">&nbsp;r&nbsp;red颜色分量
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;</span><span style="color: #808080; ">@param</span><span style="color: #008000; ">&nbsp;g&nbsp;green颜色分量
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;</span><span style="color: #808080; ">@param</span><span style="color: #008000; ">&nbsp;b&nbsp;blue颜色分量
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;</span><span style="color: #808080; ">@return</span><span style="color: #008000; ">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">*/</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;String&nbsp;toHex(<span style="color: #0000FF; ">int</span>&nbsp;r,&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;g,&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;b)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;"#"&nbsp;+&nbsp;toHexValue(r)&nbsp;+&nbsp;toHexValue(g)&nbsp;+&nbsp;toHexValue(b);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">private</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;String&nbsp;toHexValue(<span style="color: #0000FF; ">int</span>&nbsp;number)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StringBuilder&nbsp;builder&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;StringBuilder(Integer.toHexString(number&nbsp;&amp;&nbsp;0xff));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>&nbsp;(builder.length()&nbsp;&lt;&nbsp;2)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;builder.append("0");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;builder.toString().toUpperCase();
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;printPointRGB(<span style="color: #0000FF; ">int</span>&nbsp;x,&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;y)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedImage&nbsp;bi&nbsp;=&nbsp;ImageIO.read(<span style="color: #0000FF; ">new</span>&nbsp;File("D:/snapshot.jpg"));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>[]&nbsp;rgb&nbsp;=&nbsp;getRGB(bi,&nbsp;x,&nbsp;y);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Color&nbsp;color&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;Color(rgb[0],&nbsp;rgb[1],&nbsp;rgb[2]);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("red&nbsp;=&nbsp;"&nbsp;+&nbsp;color.getRed());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("green&nbsp;=&nbsp;"&nbsp;+&nbsp;color.getGreen());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("blue&nbsp;=&nbsp;"&nbsp;+&nbsp;color.getBlue());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("hex&nbsp;=&nbsp;"&nbsp;+&nbsp;toHex(color.getRed(),&nbsp;color.getGreen(),&nbsp;color.getBlue()));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #0000FF; ">catch</span>&nbsp;(IOException&nbsp;ex)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generateSnapshot();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printPointRGB(100,&nbsp;100);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}</code></pre>
+
+		</section>
+	</div>
+</body>
+</html>

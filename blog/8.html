@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>基于iciba的英汉词典</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<script type="text/javascript" src="js/changebkg.js"></script>
+	<div class="container">
+		<section id="main_content">
+
+<h3>基于iciba的英汉词典</h3>
+
+<p>通过对<a href="http://www.iciba.com" target="_blank">金山在线词典</a>的分析，我发现在他的词库里有的单词的url都是以"http://www.iciba.com/" + 单词 的形式出现的。</p>
+<p>在之前我写过一个<a href="3.html" target="_blank">获得网页源代码</a>的代码，我在此基础上写了一个获得英文单词在iciba上面的获得单词翻译的程序，那么接下来先要查单词就可以不用打开浏览器那么麻烦了。</p>
+<p>getWordName函数用于获得单词对应的实际单词，因为很有可能我要查的单词实际上是没有的，那么他就会跳转到另一个和这个单词表交响的单词的url上。 getTranslation函数用于获得单词的中文翻译。</p>
+<p>BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "utf-8"));这句话最后添加的"utf-8"解决了获取网页源代码里面的中文乱码问题。</p>
+<p>代码：</p>
+
+
+<pre><code><span style="color: #0000FF; ">import</span>&nbsp;java.io.BufferedReader;<br />
+<span style="color: #0000FF; ">import</span>&nbsp;java.io.InputStreamReader;<br />
+<span style="color: #0000FF; ">import</span>&nbsp;java.net.HttpURLConnection;<br />
+<span style="color: #0000FF; ">import</span>&nbsp;java.net.URL;<br />
+<br />
+<br />
+<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">class</span>&nbsp;EnglishChineseTranslater&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;String&nbsp;getWordName(String&nbsp;word)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;urlString&nbsp;=&nbsp;"http://www.iciba.com/"&nbsp;+&nbsp;word;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL&nbsp;url&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;URL(urlString);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpURLConnection&nbsp;urlConnection&nbsp;=&nbsp;(HttpURLConnection)&nbsp;url.openConnection();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedReader&nbsp;reader&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;BufferedReader(<span style="color: #0000FF; ">new</span>&nbsp;InputStreamReader(urlConnection.getInputStream(),&nbsp;"utf-8"));<span style="color: #008000; ">//</span><span style="color: #008000; ">"utf-8"解决中文乱码问题</span><span style="color: #008000; "><br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;line;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ans&nbsp;=&nbsp;"";<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">for</span>(<span style="color: #0000FF; ">int</span>&nbsp;i=0;i&lt;8;i++)&nbsp;reader.readLine();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line&nbsp;=&nbsp;reader.readLine();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;len&nbsp;=&nbsp;line.length();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">for</span>(<span style="color: #0000FF; ">int</span>&nbsp;i=len-4;i&nbsp;&gt;&nbsp;0&nbsp;&amp;&amp;&nbsp;line.charAt(i)&nbsp;!=&nbsp;'/';i--)&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans&nbsp;=&nbsp;line.charAt(i)&nbsp;+&nbsp;ans;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;ans;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;String&nbsp;getTranslation(String&nbsp;word)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;urlString&nbsp;=&nbsp;"http://www.iciba.com/"&nbsp;+&nbsp;word;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL&nbsp;url&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;URL(urlString);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HttpURLConnection&nbsp;urlConnection&nbsp;=&nbsp;(HttpURLConnection)&nbsp;url.openConnection();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedReader&nbsp;reader&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;BufferedReader(<span style="color: #0000FF; ">new</span>&nbsp;InputStreamReader(urlConnection.getInputStream(),&nbsp;"utf-8"));<span style="color: #008000; ">//</span><span style="color: #008000; ">"utf-8"解决中文乱码问题</span><span style="color: #008000; "><br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;line;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ans&nbsp;=&nbsp;"";<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>&nbsp;((line&nbsp;=&nbsp;reader.readLine())&nbsp;!=&nbsp;<span style="color: #0000FF; ">null</span>){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line&nbsp;=&nbsp;line.trim();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(line.equals("&lt;span&nbsp;class=\"label_list\"&gt;"))&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>((line&nbsp;=&nbsp;reader.readLine())&nbsp;!=&nbsp;<span style="color: #0000FF; ">null</span>)&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line&nbsp;=&nbsp;line.trim();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(<span style="color: #0000FF; ">false</span>&nbsp;==&nbsp;line.substring(0,&nbsp;7).equals("&lt;label&gt;"))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">break</span>;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;line&nbsp;=&nbsp;line.substring(7,&nbsp;line.length()-8);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">System.out.println(line);</span><span style="color: #008000; "><br />
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans&nbsp;+=&nbsp;line;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">break</span>;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;ans;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;word&nbsp;=&nbsp;"apple";<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;trueWord&nbsp;=&nbsp;getWordName(word);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;translation&nbsp;=&nbsp;getTranslation(word);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(trueWord&nbsp;+&nbsp;":&nbsp;"&nbsp;+&nbsp;translation);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+}</code></pre>
+
+		</section>
+	</div>
+</body>
+</html>
