@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>Java找出某一目录下包含某一关键词的所有文件</title>
+</head>
+<body onload="startTime()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+
+<h3>Java找出某一目录下包含某一关键词的所有文件</h3>
+
+<p>之前写过FileHelper类，其中的readFile和writeFile方法分别用于文件的读和写。这次在原来的基础上添加了如下方法：</p>
+<p>listFiles</p>
+<p>用于递归地查找一个目录下的所有文件并输出。</p>
+<p>hasWords</p>
+<p>用于判断一个文件中是否含有某一关键词。</p>
+<p>findFilesContainsWords</p>
+<p>递归地查找某一目录下所有包含某一关键字的所有文件（这里我加了一个过滤器，即我只找了所有后缀为“.h”的文件）。</p>
+<p>加了新功能后的FileHelper类代码如下：</p>
+
+<pre><code><span style="color: #00EEFF; ">import</span>&nbsp;java.io.BufferedReader;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.BufferedWriter;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.File;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.FileReader;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.FileWriter;
+
+
+
+<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;FileHelper&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;String&nbsp;readFile(String&nbsp;filename)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedReader&nbsp;reader&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;BufferedReader(<span style="color: #00EEFF; ">new</span>&nbsp;FileReader(filename));&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ans&nbsp;=&nbsp;"",&nbsp;line&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">while</span>((line&nbsp;=&nbsp;reader.readLine())&nbsp;!=&nbsp;<span style="color: #00EEFF; ">null</span>){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans&nbsp;+=&nbsp;line&nbsp;+&nbsp;"\r\n";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reader.close();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;ans;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;writeFile(String&nbsp;content,&nbsp;String&nbsp;filename)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedWriter&nbsp;writer&nbsp;&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;BufferedWriter(<span style="color: #00EEFF; ">new</span>&nbsp;FileWriter(filename));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;writer.write(content);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;writer.flush();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;writer.close();
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;listFiles(String&nbsp;path)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;file&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;File(path);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File[]&nbsp;files&nbsp;=&nbsp;file.listFiles();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(files&nbsp;==&nbsp;<span style="color: #00EEFF; ">null</span>)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">for</span>(File&nbsp;f&nbsp;:&nbsp;files)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(f.isFile())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(f.toString());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(f.isDirectory())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(f.toString());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;listFiles(f.toString());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">boolean</span>&nbsp;hasWords(String&nbsp;file,&nbsp;String&nbsp;words)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;s&nbsp;=&nbsp;readFile(file);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;w_len&nbsp;=&nbsp;words.length();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;len&nbsp;=&nbsp;s.length();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">for</span>(<span style="color: #00EEFF; ">int</span>&nbsp;i=0;i+w_len&lt;=len;i++)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(s.substring(i,&nbsp;i+w_len).equals(words))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;<span style="color: #00EEFF; ">true</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(Exception&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;<span style="color: #00EEFF; ">false</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;findFilesContainsWords(String&nbsp;path,&nbsp;String&nbsp;words)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;file&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;File(path);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File[]&nbsp;files&nbsp;=&nbsp;file.listFiles();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(files&nbsp;==&nbsp;<span style="color: #00EEFF; ">null</span>)&nbsp;<span style="color: #00EEFF; ">return</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">for</span>(File&nbsp;f&nbsp;:&nbsp;files)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(f.isFile())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(hasWords(f.toString(),&nbsp;words))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(f.toString());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(f.isDirectory())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;findFilesContainsWords(f.toString(),&nbsp;words);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;findFilesContainsWords("D:\\test",&nbsp;args[0]);<span style="color: #008000; ">//</span><span style="color: #008000; ">在命令行中找</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;}
+}</code></pre>
+
+		</section>
+	</div>
+</body>
+</html>

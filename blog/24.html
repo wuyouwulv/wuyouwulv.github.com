@@ -18,17 +18,17 @@
 <h3>Java中HashMap的两种遍历方式</h3>
 
 <p>第一种:</p>
-<pre><code>Map&nbsp;map&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;HashMap();
+<pre><code>Map&nbsp;map&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;HashMap();
 Iterator&nbsp;iter&nbsp;=&nbsp;map.entrySet().iterator();
-<span style="color: #0000FF; ">while</span>&nbsp;(iter.hasNext())&nbsp;{
+<span style="color: #00EEFF; ">while</span>&nbsp;(iter.hasNext())&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;Map.Entry&nbsp;entry&nbsp;=&nbsp;(Map.Entry)&nbsp;iter.next();
 &nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;key&nbsp;=&nbsp;entry.getKey();
 &nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;val&nbsp;=&nbsp;entry.getValue();
 }</code></pre>
 <p>第二种:</p>
-<pre><code>Map&nbsp;map&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;HashMap();
+<pre><code>Map&nbsp;map&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;HashMap();
 Iterator&nbsp;iter&nbsp;=&nbsp;map.keySet().iterator();
-<span style="color: #0000FF; ">while</span>&nbsp;(iter.hasNext())&nbsp;{
+<span style="color: #00EEFF; ">while</span>&nbsp;(iter.hasNext())&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;key&nbsp;=&nbsp;iter.next();
 &nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;val&nbsp;=&nbsp;map.get(key);
 }</code></pre>

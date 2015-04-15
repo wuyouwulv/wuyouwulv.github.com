@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>Java连接MySQL实现增删改查</title>
+</head>
+<body onload="startTime()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+
+<h3>Java连接MySQL实现增删改查</h3>
+
+<p>MyFrame类用于实现数据的增删改查。</p>
+<p>代码用JFrame进行了演示，其中的每一个按键都添加了事件监听。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里假定mysql数据库的端口号是3306。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;数据库是my_database。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;表是user。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;表中包含name和score两个元素。</p>
+<p>使用前注意引入JDBC的jar包作为外部jar包。</p>
+
+<pre><code><span style="color: #00EEFF; ">import</span>&nbsp;java.awt.Container;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.awt.FlowLayout;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.awt.event.ActionEvent;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.awt.event.ActionListener;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.sql.Connection;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.sql.DriverManager;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.sql.ResultSet;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.sql.SQLException;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.sql.Statement;
+
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JButton;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JFrame;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JLabel;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JTextField;
+
+
+<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;MyFrame&nbsp;<span style="color: #00EEFF; ">extends</span>&nbsp;JFrame&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">final</span>&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;Width&nbsp;=&nbsp;420;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">final</span>&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;Height&nbsp;=&nbsp;300;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JFrame&nbsp;frame&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">private&nbsp;static&nbsp;Container&nbsp;ctn&nbsp;=&nbsp;null;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;FlowLayout&nbsp;flowLayout&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JLabel&nbsp;nameLabel&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JLabel&nbsp;scoreLabel&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JTextField&nbsp;nameText&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JTextField&nbsp;scoreText&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JButton&nbsp;addButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JButton&nbsp;deleteButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JButton&nbsp;modifyButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JButton&nbsp;searchButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JLabel&nbsp;resultLabel&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JTextField&nbsp;resultText&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;JButton&nbsp;closeButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;String&nbsp;driver&nbsp;=&nbsp;"com.mysql.jdbc.Driver";
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;String&nbsp;url&nbsp;=&nbsp;"jdbc:mysql://localhost:3306/my_database";
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;String&nbsp;userName&nbsp;=&nbsp;"root";
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;String&nbsp;password&nbsp;=&nbsp;"root";
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;Connection&nbsp;conn&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;Statement&nbsp;stmt&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;MyFrame()&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JFrame("JFrame&nbsp;connect&nbsp;MySQL");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flowLayout&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;FlowLayout(FlowLayout.LEFT);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flowLayout.setHgap(20);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flowLayout.setVgap(30);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.setLayout(flowLayout);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nameLabel&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JLabel("name");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreLabel&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JLabel("score");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nameText&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JTextField(10);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scoreText&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JTextField(10);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JButton("ADD");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deleteButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JButton("DELETE");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifyButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JButton("MODIFY");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JButton("SEARCH");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resultLabel&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JLabel("result");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resultText&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JTextField(30);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;closeButton&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;JButton("CLOSE");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(nameLabel);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(nameText);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(scoreLabel);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(scoreText);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(addButton);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(deleteButton);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(modifyButton);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(searchButton);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(resultLabel);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(resultText);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.add(closeButton);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addButton.addActionListener(<span style="color: #00EEFF; ">new</span>&nbsp;ButtonAction());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deleteButton.addActionListener(<span style="color: #00EEFF; ">new</span>&nbsp;ButtonAction());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;modifyButton.addActionListener(<span style="color: #00EEFF; ">new</span>&nbsp;ButtonAction());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchButton.addActionListener(<span style="color: #00EEFF; ">new</span>&nbsp;ButtonAction());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;closeButton.addActionListener(<span style="color: #00EEFF; ">new</span>&nbsp;ButtonAction());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.setVisible(<span style="color: #00EEFF; ">true</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.setSize(Width,&nbsp;Height);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;ButtonAction&nbsp;<span style="color: #00EEFF; ">implements</span>&nbsp;ActionListener&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;actionPerformed(ActionEvent&nbsp;evt)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;s&nbsp;=&nbsp;evt.getSource();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;name&nbsp;=&nbsp;nameText.getText();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;score&nbsp;=&nbsp;scoreText.getText();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(s&nbsp;==&nbsp;addButton)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(name.length()==0&nbsp;||&nbsp;score.length()==0)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Please&nbsp;enter&nbsp;the&nbsp;name&nbsp;and&nbsp;score!");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;sqlInsert&nbsp;=&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"INSERT&nbsp;INTO&nbsp;my_table&nbsp;(name,score)&nbsp;VALUES&nbsp;(\""&nbsp;+&nbsp;name&nbsp;+&nbsp;"\","&nbsp;+&nbsp;score&nbsp;+&nbsp;");";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stmt.executeUpdate(sqlInsert);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(SQLException&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Add&nbsp;"&nbsp;+&nbsp;name&nbsp;+&nbsp;"&nbsp;Succeed!");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(s&nbsp;==&nbsp;deleteButton)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(name.length()&nbsp;==&nbsp;0)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("You&nbsp;must&nbsp;enter&nbsp;the&nbsp;name");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(score.length()&nbsp;==&nbsp;0)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;sqlDelete&nbsp;=&nbsp;"DELETE&nbsp;FROM&nbsp;my_table&nbsp;WHERE&nbsp;name=\""&nbsp;+&nbsp;name&nbsp;+&nbsp;"\";";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stmt.executeUpdate(sqlDelete);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(SQLException&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;sqlDelete&nbsp;=&nbsp;"DELETE&nbsp;FROM&nbsp;my_table&nbsp;WHERE&nbsp;name=\""&nbsp;+&nbsp;name&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;"\"&nbsp;and&nbsp;score&lt;="&nbsp;+&nbsp;score&nbsp;+&nbsp;";";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stmt.executeUpdate(sqlDelete);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(SQLException&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Delete&nbsp;succeed!");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(s&nbsp;==&nbsp;modifyButton)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(name.length()&nbsp;==&nbsp;0&nbsp;||&nbsp;score.length()&nbsp;==&nbsp;0)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Please&nbsp;enter&nbsp;the&nbsp;name&nbsp;and&nbsp;score&nbsp;you&nbsp;want&nbsp;to&nbsp;modify!");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;sqlModify&nbsp;=&nbsp;"UPDATE&nbsp;my_table&nbsp;SET&nbsp;name=\""&nbsp;+&nbsp;name&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;"\"&nbsp;WHERE&nbsp;score="&nbsp;+&nbsp;score&nbsp;+&nbsp;";";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stmt.executeUpdate(sqlModify);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(SQLException&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Modify&nbsp;"&nbsp;+&nbsp;name&nbsp;+&nbsp;"&nbsp;succeed!");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(s&nbsp;==&nbsp;searchButton)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;sqlName&nbsp;=&nbsp;"&nbsp;name=\""&nbsp;+&nbsp;name&nbsp;+&nbsp;"\"";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;sqlScore&nbsp;=&nbsp;"&nbsp;score="&nbsp;+&nbsp;score;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;sqlSelect&nbsp;=&nbsp;"SELECT&nbsp;*&nbsp;FROM&nbsp;my_table";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(name.length()&nbsp;==&nbsp;0&nbsp;&amp;&amp;&nbsp;score.length()&nbsp;==&nbsp;0)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(score.length()&nbsp;==&nbsp;0)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqlSelect&nbsp;+=&nbsp;"&nbsp;WHERE"&nbsp;+&nbsp;sqlName&nbsp;+&nbsp;";";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(name.length()&nbsp;==&nbsp;0)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqlSelect&nbsp;+=&nbsp;"&nbsp;WHERE"&nbsp;+&nbsp;sqlScore&nbsp;+&nbsp;";";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sqlSelect&nbsp;+=&nbsp;"&nbsp;WHERE"&nbsp;+&nbsp;sqlName&nbsp;+&nbsp;"&nbsp;and"&nbsp;+&nbsp;sqlScore&nbsp;+&nbsp;";";&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">System.out.println(sqlSelect);</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ResultSet&nbsp;res&nbsp;=&nbsp;stmt.executeQuery(sqlSelect);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">while</span>(res.next())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ansName&nbsp;=&nbsp;res.getString(1);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ansScore&nbsp;=&nbsp;res.getString(2);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(ansName&nbsp;+&nbsp;"&nbsp;get&nbsp;score:&nbsp;"&nbsp;+&nbsp;ansScore);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(SQLException&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(s&nbsp;==&nbsp;closeButton)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stmt.close();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(conn&nbsp;!=&nbsp;<span style="color: #00EEFF; ">null</span>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conn.close();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(SQLException&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("SQLException异常"+e.getMessage());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Class.forName(driver);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("数据库连接成功");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(ClassNotFoundException&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("ClassNotFoundException");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;conn&nbsp;=&nbsp;DriverManager.getConnection(url,&nbsp;userName,&nbsp;password);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("connect&nbsp;database&nbsp;successful");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stmt&nbsp;=&nbsp;conn.createStatement();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;MyFrame();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(SQLException&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("SQLException异常"+e.getMessage());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}</code></pre>
+
+		</section>
+	</div>
+</body>
+</html>

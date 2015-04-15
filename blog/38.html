@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>Java将文本文件中的数据导入Excel</title>
+</head>
+<body onload="startTime()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+		
+
+<h3>Java将文本文件中的数据导入Excel</h3>
+
+<p>运行此程序需要添加一个jar包<a href="http://pan.baidu.com/s/1i3ipJNJ" target="_blank">下载地址</a></p>
+
+<pre><code><span style="color: #00EEFF; ">import</span>&nbsp;java.io.BufferedReader;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.File;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.FileReader;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.util.StringTokenizer;
+
+<span style="color: #00EEFF; ">import</span>&nbsp;jxl.Workbook;
+<span style="color: #00EEFF; ">import</span>&nbsp;jxl.write.Label;
+<span style="color: #00EEFF; ">import</span>&nbsp;jxl.write.WritableSheet;
+<span style="color: #00EEFF; ">import</span>&nbsp;jxl.write.WritableWorkbook;
+
+
+<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;FileToExcel&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;writeToExcel("D:\\output.txt",&nbsp;"D:\\output.xls");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("finished!");
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;writeToExcel(String&nbsp;inFile,&nbsp;String&nbsp;outExcel)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">打开文件&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WritableWorkbook&nbsp;book=&nbsp;Workbook.createWorkbook(<span style="color: #00EEFF; ">new</span>&nbsp;File(outExcel));&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">生成名为&#8220;第一页&#8221;的工作表，参数0表示这是第一页&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WritableSheet&nbsp;sheet=book.createSheet("第一页",0);&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">在Label对象的构造子中指名单元格位置是第一列第一行(0,0)&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">以及单元格内容为test&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">Label&nbsp;label=new&nbsp;Label(0,0,"测试");&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">将定义好的单元格添加到工作表中&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">sheet.addCell(label);&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">jxl.write.Number&nbsp;number&nbsp;=&nbsp;new&nbsp;jxl.write.Number(1,0,789.123);&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">sheet.addCell(number);&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">jxl.write.Label&nbsp;s=new&nbsp;jxl.write.Label(1,&nbsp;2,&nbsp;"三十三");&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">sheet.addCell(s);&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">//</span><span style="color: #008000; ">写入数据并关闭文件&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Label&nbsp;label&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;s1&nbsp;=&nbsp;readFile(inFile);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StringTokenizer&nbsp;st1&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;StringTokenizer(s1,&nbsp;"\n");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">for</span>(<span style="color: #00EEFF; ">int</span>&nbsp;i=0;st1.hasMoreElements();i++)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;s2&nbsp;=&nbsp;st1.nextToken();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;StringTokenizer&nbsp;st2&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;StringTokenizer(s2,&nbsp;"&nbsp;\t");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">for</span>(<span style="color: #00EEFF; ">int</span>&nbsp;j=0;st2.hasMoreElements();j++)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;s&nbsp;=&nbsp;st2.nextToken();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label=<span style="color: #00EEFF; ">new</span>&nbsp;Label(j,i,&nbsp;""&nbsp;+&nbsp;s);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sheet.addCell(label);&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;book.write();&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;book.close();&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">最好在finally中关闭，此处仅作为示例不太规范&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;String&nbsp;readFile(String&nbsp;filename)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedReader&nbsp;reader&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;BufferedReader(<span style="color: #00EEFF; ">new</span>&nbsp;FileReader(filename));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ans&nbsp;=&nbsp;"",&nbsp;line&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">while</span>&nbsp;((line&nbsp;=&nbsp;reader.readLine())&nbsp;!=&nbsp;<span style="color: #00EEFF; ">null</span>)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ans&nbsp;+=&nbsp;line&nbsp;+&nbsp;"\r\n";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reader.close();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;ans;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+}</code></pre>
+		
+		</section>
+	</div>
+</body>
+</html>

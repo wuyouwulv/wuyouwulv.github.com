@@ -21,30 +21,30 @@
 <p>在Java JDK1.4 中提供的"机器人"Robot类用于产生与本地操作系统有关的底层输入、测试应用程序运行或自动控制应用程序运行。Robot类提供了一个方法：createScreenCapture（..）,可以直接将全屏幕或某个屏幕区域的像素拷贝到一个BufferedImage对象中，我们只需要将该对象写入到一个图像文件之中，就完成了屏幕到图像的拷贝过程。</p>
 <p>ScreenDemo类的generateSnapshot()方法用于实现对当前屏幕的截取。</p>
 
-<pre><code><span style="color: #0000FF; ">import</span>&nbsp;java.awt.Rectangle;
-<span style="color: #0000FF; ">import</span>&nbsp;java.awt.Robot;
-<span style="color: #0000FF; ">import</span>&nbsp;java.awt.Toolkit;
-<span style="color: #0000FF; ">import</span>&nbsp;java.awt.image.BufferedImage;
-<span style="color: #0000FF; ">import</span>&nbsp;java.io.File;
-<span style="color: #0000FF; ">import</span>&nbsp;javax.imageio.ImageIO;
+<pre><code><span style="color: #00EEFF; ">import</span>&nbsp;java.awt.Rectangle;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.awt.Robot;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.awt.Toolkit;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.awt.image.BufferedImage;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.File;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.imageio.ImageIO;
 
 
-<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">class</span>&nbsp;ScreenDemo&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;File&nbsp;generateSnapshot()&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;snapshotFile&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;File("D:/"&nbsp;+&nbsp;System.currentTimeMillis()&nbsp;+&nbsp;".jpg");
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;width&nbsp;=&nbsp;(<span style="color: #0000FF; ">int</span>)&nbsp;Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;height&nbsp;=&nbsp;(<span style="color: #0000FF; ">int</span>)&nbsp;Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">try</span>&nbsp;{
+<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;ScreenDemo&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;File&nbsp;generateSnapshot()&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;snapshotFile&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;File("D:/"&nbsp;+&nbsp;System.currentTimeMillis()&nbsp;+&nbsp;".jpg");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;width&nbsp;=&nbsp;(<span style="color: #00EEFF; ">int</span>)&nbsp;Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;height&nbsp;=&nbsp;(<span style="color: #00EEFF; ">int</span>)&nbsp;Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Robot&nbsp;robot;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;robot&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;Robot();
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedImage&nbsp;image&nbsp;=&nbsp;robot.createScreenCapture(<span style="color: #0000FF; ">new</span>&nbsp;Rectangle(width,&nbsp;height));&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;robot&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;Robot();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedImage&nbsp;image&nbsp;=&nbsp;robot.createScreenCapture(<span style="color: #00EEFF; ">new</span>&nbsp;Rectangle(width,&nbsp;height));&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImageIO.write(image,&nbsp;"jpg",&nbsp;snapshotFile);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #0000FF; ">catch</span>&nbsp;(Exception&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(Exception&nbsp;e)&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;snapshotFile;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;snapshotFile;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generateSnapshot();
 &nbsp;&nbsp;&nbsp;&nbsp;}
 }</code></pre>

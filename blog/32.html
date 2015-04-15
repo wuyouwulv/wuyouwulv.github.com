@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>JFrame展示图片</title>
+</head>
+<body onload="startTime()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+
+<h3>JFrame展示图片</h3>
+
+<p>这是一个在JFrame显示图片（包括动图）的小程序。</p>
+<p>主要用到了JPanel类，JPanel类有一个paint()方法，用于实现画图。在这里paint()方法里写的就是调用一张图片，然后就实现了在JFrame中显示一张图片。</p>
+<p>其原理其实是：在JFrame对象中放一个JPanel对象，在JPanel中实现画图。 代码如下：</p>
+
+<pre><code><span style="color: #00EEFF; ">import</span>&nbsp;java.awt.Graphics;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.ImageIcon;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JFrame;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JPanel;
+
+<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;ImageApp&nbsp;<span style="color: #00EEFF; ">extends</span>&nbsp;JFrame&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;ImageApp()&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setDefaultCloseOperation(EXIT_ON_CLOSE);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setLocationRelativeTo(<span style="color: #00EEFF; ">null</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setSize(400,&nbsp;300);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setResizable(<span style="color: #00EEFF; ">false</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getContentPane().setLayout(<span style="color: #00EEFF; ">null</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JPanel&nbsp;panel&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;ImagePanel();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;panel.setBounds(0,&nbsp;0,&nbsp;400,&nbsp;300);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getContentPane().add(panel);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setVisible(<span style="color: #00EEFF; ">true</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;ImageApp();
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;ImagePanel&nbsp;<span style="color: #00EEFF; ">extends</span>&nbsp;JPanel&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;paint(Graphics&nbsp;g)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">super</span>.paint(g);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImageIcon&nbsp;icon&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;ImageIcon("D:\\testapp.jpg");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;g.drawImage(icon.getImage(),&nbsp;0,&nbsp;0,&nbsp;400,&nbsp;300,&nbsp;<span style="color: #00EEFF; ">this</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}</code></pre>
+
+		</section>
+	</div>
+</body>
+</html>

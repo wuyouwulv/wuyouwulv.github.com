@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>JFileChooser (Java Swing提供的文件选择对话框)</title>
+</head>
+<body onload="startTime()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+
+<h3>JFileChooser (Java Swing提供的文件选择对话框)</h3>
+
+<table cellspacing="0" cellpadding="3" width="100%" summary="" border="1" style="color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;">
+     <tbody>
+         <tr bgcolor="white">
+             <td><span style="color: #33ff33;"><code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">JFileChooser</a></strong>()</code>&nbsp;</span><br />
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;构造一个指向用户默认目录的&nbsp;<code>JFileChooser</code>。</td>
+         </tr>
+         <tr bgcolor="white">
+             <td><code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">JFileChooser</a></strong>(<a target="_blank" title="java.io 中的类" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">File</a>&nbsp;currentDirectory)</code><br />
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用给定的&nbsp;<code>File</code>&nbsp;作为路径来构造一个&nbsp;<code>JFileChooser</code>。</td>
+         </tr>
+     </tbody>
+</table>
+<br style="color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;" />
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;"></p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;"><code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">setFileSelectionMode</a></strong>(int&nbsp;mode)</code><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置&nbsp;<code>JFileChooser</code>，以允许用户只选择文件、只选择目录，或者可选择文件和目录。<br />
+</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;">mode参数：<code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">FILES_AND_DIRECTORIES</a></strong></code>&nbsp; &nbsp;指示显示文件和目录。</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;">&nbsp; &nbsp; &nbsp;&nbsp;<code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">FILES_ONLY</a></strong></code>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 指示仅显示文件。</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;">&nbsp; &nbsp; &nbsp;<code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">DIRECTORIES_ONLY</a></strong></code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;指示仅显示目录。</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;"><code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">showDialog</a></strong>(<a target="_blank" title="java.awt 中的类" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">Component</a>&nbsp;parent,<a target="_blank" title="java.lang 中的类" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">String</a>&nbsp;approveButtonText)</code><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弹出具有自定义 approve 按钮的自定义文件选择器对话框。<br />
+</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;"><code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">showOpenDialog</a></strong>(<a target="_blank" title="java.awt 中的类" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">Component</a>&nbsp;parent)</code><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弹出一个 "Open File" 文件选择器对话框。<br />
+</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;"><code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">showSaveDialog</a></strong>(<a target="_blank" title="java.awt 中的类" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">Component</a>&nbsp;parent)</code><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;弹出一个 "Save File" 文件选择器对话框。<br />
+</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;"><code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">setMultiSelectionEnabled</a></strong>(boolean&nbsp;b)</code><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;设置文件选择器，以允许选择多个文件。<br />
+</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;"><code><strong><a target="_blank" href="http://write.blog.csdn.net/postedit" style="text-decoration: none; color: #0c89cf;">getSelectedFiles</a></strong>()</code>&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果将文件选择器设置为允许选择多个文件，则返回选中文件的列表(File[])。<br />
+</p>
+<p style="margin: 0px; padding: 0px; color: #555555; font-family: 'microsoft yahei'; font-size: 15px; line-height: 35px; background-color: #ffffff;"><code><strong><a target="_blank" href="http://blog.csdn.net/liang5630/article/details/25651491" style="text-decoration: none; color: #0c89cf;">getSelectedFile</a></strong>()</code><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;返回选中的文件。<br />
+</p>
+
+<pre><code>span style="color: #00EEFF; ">import</span>&nbsp;java.awt.event.ActionEvent;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.awt.event.ActionListener;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.File;
+
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JButton;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JFileChooser;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JFrame;
+<span style="color: #00EEFF; ">import</span>&nbsp;javax.swing.JLabel;
+
+<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;FileChooser&nbsp;<span style="color: #00EEFF; ">extends</span>&nbsp;JFrame&nbsp;<span style="color: #00EEFF; ">implements</span>&nbsp;ActionListener{
+&nbsp;&nbsp;&nbsp;&nbsp;JButton&nbsp;open=<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;FileChooser();
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;FileChooser(){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;open=<span style="color: #00EEFF; ">new</span>&nbsp;JButton("open");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">this</span>.add(open);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">this</span>.setBounds(400,&nbsp;200,&nbsp;100,&nbsp;100);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">this</span>.setVisible(<span style="color: #00EEFF; ">true</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">this</span>.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;open.addActionListener(<span style="color: #00EEFF; ">this</span>);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;@Override
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;actionPerformed(ActionEvent&nbsp;e)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;TODO&nbsp;Auto-generated&nbsp;method&nbsp;stub</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JFileChooser&nbsp;jfc=<span style="color: #00EEFF; ">new</span>&nbsp;JFileChooser();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES&nbsp;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jfc.showDialog(<span style="color: #00EEFF; ">new</span>&nbsp;JLabel(),&nbsp;"选择");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;file=jfc.getSelectedFile();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>(file.isDirectory()){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("文件夹:"+file.getAbsolutePath());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<span style="color: #00EEFF; ">else</span>&nbsp;<span style="color: #00EEFF; ">if</span>(file.isFile()){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("文件:"+file.getAbsolutePath());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(jfc.getSelectedFile().getName());
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+
+}</code></pre>
+
+		</section>
+	</div>
+</body>
+</html>

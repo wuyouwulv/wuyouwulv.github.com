@@ -31,73 +31,73 @@
 <p>技术上：具体调用dos命令用Runtime.getRuntime().exec实现，查看字符串是否符合格式用正则表达式实现。</p>
 <p>见Ping类的ping(String,int,int)函数。</p>
 
-<pre><code><span style="color: #0000FF; ">import</span>&nbsp;java.io.BufferedReader;
-<span style="color: #0000FF; ">import</span>&nbsp;java.io.IOException;
-<span style="color: #0000FF; ">import</span>&nbsp;java.io.InputStreamReader;
-<span style="color: #0000FF; ">import</span>&nbsp;java.net.InetAddress;
-<span style="color: #0000FF; ">import</span>&nbsp;java.net.UnknownHostException;
-<span style="color: #0000FF; ">import</span>&nbsp;java.util.regex.Matcher;
-<span style="color: #0000FF; ">import</span>&nbsp;java.util.regex.Pattern;
+<pre><code><span style="color: #00EEFF; ">import</span>&nbsp;java.io.BufferedReader;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.IOException;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.io.InputStreamReader;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.net.InetAddress;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.net.UnknownHostException;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.util.regex.Matcher;
+<span style="color: #00EEFF; ">import</span>&nbsp;java.util.regex.Pattern;
 
-<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">class</span>&nbsp;Ping&nbsp;{
+<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">class</span>&nbsp;Ping&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">boolean</span>&nbsp;ping(String&nbsp;ipAddress)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;&nbsp;timeOut&nbsp;=&nbsp;&nbsp;3000&nbsp;;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">超时应该在3钞以上&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">
-</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">boolean</span>&nbsp;status&nbsp;=&nbsp;InetAddress.getByName(ipAddress).isReachable(timeOut);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;当返回值是true时，说明host是可用的，false则不可。</span><span style="color: #008000; ">
-</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;status;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">boolean</span>&nbsp;ping(String&nbsp;ipAddress)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;&nbsp;timeOut&nbsp;=&nbsp;&nbsp;3000&nbsp;;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">超时应该在3钞以上&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">boolean</span>&nbsp;status&nbsp;=&nbsp;InetAddress.getByName(ipAddress).isReachable(timeOut);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;当返回值是true时，说明host是可用的，false则不可。</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;status;
 &nbsp;&nbsp;&nbsp;&nbsp;}
 &nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;ping02(String&nbsp;ipAddress)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;line&nbsp;=&nbsp;<span style="color: #0000FF; ">null</span>;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">try</span>&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;ping02(String&nbsp;ipAddress)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;line&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Process&nbsp;pro&nbsp;=&nbsp;Runtime.getRuntime().exec("ping&nbsp;"&nbsp;+&nbsp;ipAddress);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedReader&nbsp;buf&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;BufferedReader(<span style="color: #0000FF; ">new</span>&nbsp;InputStreamReader(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedReader&nbsp;buf&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;BufferedReader(<span style="color: #00EEFF; ">new</span>&nbsp;InputStreamReader(
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pro.getInputStream()));
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>&nbsp;((line&nbsp;=&nbsp;buf.readLine())&nbsp;!=&nbsp;<span style="color: #0000FF; ">null</span>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">while</span>&nbsp;((line&nbsp;=&nbsp;buf.readLine())&nbsp;!=&nbsp;<span style="color: #00EEFF; ">null</span>)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(line);
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #0000FF; ">catch</span>&nbsp;(Exception&nbsp;ex)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(Exception&nbsp;ex)&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(ex.getMessage());
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
 &nbsp;&nbsp;&nbsp;&nbsp;}
 &nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">boolean</span>&nbsp;ping(String&nbsp;ipAddress,&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;pingTimes,&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;timeOut)&nbsp;{&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedReader&nbsp;in&nbsp;=&nbsp;<span style="color: #0000FF; ">null</span>;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">boolean</span>&nbsp;ping(String&nbsp;ipAddress,&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;pingTimes,&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;timeOut)&nbsp;{&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BufferedReader&nbsp;in&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runtime&nbsp;r&nbsp;=&nbsp;Runtime.getRuntime();&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;将要执行的ping命令,此命令是windows格式的命令&nbsp;&nbsp;</span><span style="color: #008000; ">
 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;pingCommand&nbsp;=&nbsp;"ping&nbsp;"&nbsp;+&nbsp;ipAddress&nbsp;+&nbsp;"&nbsp;-n&nbsp;"&nbsp;+&nbsp;pingTimes&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;"&nbsp;-w&nbsp;"&nbsp;+&nbsp;timeOut;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">try</span>&nbsp;{&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;执行命令并获取输出&nbsp;&nbsp;</span><span style="color: #008000; ">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;执行命令并获取输出&nbsp;&nbsp;</span><span style="color: #008000; ">
 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(pingCommand);&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Process&nbsp;p&nbsp;=&nbsp;r.exec(pingCommand);&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>&nbsp;(p&nbsp;==&nbsp;<span style="color: #0000FF; ">null</span>)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;<span style="color: #0000FF; ">false</span>;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">if</span>&nbsp;(p&nbsp;==&nbsp;<span style="color: #00EEFF; ">null</span>)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;<span style="color: #00EEFF; ">false</span>;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;BufferedReader(<span style="color: #0000FF; ">new</span>&nbsp;InputStreamReader(p.getInputStream()));&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;逐行检查输出,计算类似出现=23ms&nbsp;TTL=62字样的次数&nbsp;&nbsp;</span><span style="color: #008000; ">
-</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;connectedCount&nbsp;=&nbsp;0;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;line&nbsp;=&nbsp;<span style="color: #0000FF; ">null</span>;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>&nbsp;((line&nbsp;=&nbsp;in.readLine())&nbsp;!=&nbsp;<span style="color: #0000FF; ">null</span>)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;=&nbsp;<span style="color: #00EEFF; ">new</span>&nbsp;BufferedReader(<span style="color: #00EEFF; ">new</span>&nbsp;InputStreamReader(p.getInputStream()));&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;逐行检查输出,计算类似出现=23ms&nbsp;TTL=62字样的次数&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;connectedCount&nbsp;=&nbsp;0;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;line&nbsp;=&nbsp;<span style="color: #00EEFF; ">null</span>;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">while</span>&nbsp;((line&nbsp;=&nbsp;in.readLine())&nbsp;!=&nbsp;<span style="color: #00EEFF; ">null</span>)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connectedCount&nbsp;+=&nbsp;getCheckResult(line);&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;如果出现类似=23ms&nbsp;TTL=62这样的字样,出现的次数=测试次数则返回真&nbsp;&nbsp;</span><span style="color: #008000; ">
-</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;connectedCount&nbsp;==&nbsp;pingTimes;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #0000FF; ">catch</span>&nbsp;(Exception&nbsp;ex)&nbsp;{&nbsp;&nbsp;&nbsp;
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;connectedCount&nbsp;==&nbsp;pingTimes;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(Exception&nbsp;ex)&nbsp;{&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ex.printStackTrace();&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;出现异常则返回假&nbsp;&nbsp;</span><span style="color: #008000; ">
-</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;<span style="color: #0000FF; ">false</span>;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #0000FF; ">finally</span>&nbsp;{&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">try</span>&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;<span style="color: #00EEFF; ">false</span>;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">finally</span>&nbsp;{&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">try</span>&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in.close();&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #0000FF; ">catch</span>&nbsp;(IOException&nbsp;e)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<span style="color: #00EEFF; ">catch</span>&nbsp;(IOException&nbsp;e)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
 &nbsp;&nbsp;&nbsp;&nbsp;}
 &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">若line含有=18ms&nbsp;TTL=16字样,说明已经ping通,返回1,否則返回0.</span><span style="color: #008000; ">
-</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">private</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;getCheckResult(String&nbsp;line)&nbsp;{&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;System.out.println("控制台输出的结果为:"+line);&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">private</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">int</span>&nbsp;getCheckResult(String&nbsp;line)&nbsp;{&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;System.out.println("控制台输出的结果为:"+line);&nbsp;&nbsp;</span><span style="color: #008000; ">
 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pattern&nbsp;pattern&nbsp;=&nbsp;Pattern.compile("(\\d+ms)(\\s+)(TTL=\\d+)",&nbsp;&nbsp;&nbsp;&nbsp;Pattern.CASE_INSENSITIVE);&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Matcher&nbsp;matcher&nbsp;=&nbsp;pattern.matcher(line);&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>&nbsp;(matcher.find())&nbsp;{
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">while</span>&nbsp;(matcher.find())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;1;
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>&nbsp;0;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">return</span>&nbsp;0;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #00EEFF; ">public</span>&nbsp;<span style="color: #00EEFF; ">static</span>&nbsp;<span style="color: #00EEFF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;<span style="color: #00EEFF; ">throws</span>&nbsp;Exception&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ipAddress&nbsp;=&nbsp;"127.0.0.1";
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(ping(ipAddress));
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ping02(ipAddress);
