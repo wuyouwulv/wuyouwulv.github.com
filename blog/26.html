@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>基于深度优先搜索/广度优先搜索的百度推荐词获取的Java程序</title>
+</head>
+<body onload="startTime()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+
+<h3>基于深度优先搜索/广度优先搜索的百度推荐词获取的Java程序</h3>
+
+<p>在<a href="10.html" target="_blank">基于百度的推荐程序</a>的基础上，我们可以开展大规模搜索了，也就是说：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;    今天，我写的东西是 DFS/BFS 和 推荐 的 结合。</p>
+<p>我将会把网页信息的挖取加上搜索从而达到得到更多信息的效果。</p>
+<p>举个例子，比如我在百度搜索“一句话木马”，百度会推荐给我一些信息，如“广外女生木马”，然后我再继续搜“广外女生木马”，会得到一个“网络神偷”的推荐词；这个推荐词是不包含在搜“一句话木马”的推荐词里面的，但是也是我感兴趣的，所以我通过广度优先搜索或者深度优先搜索来进行这种大规模的网络上的搜索。</p>
+<p>RelateDigger类用于实现该功能。</p>
+<p>其中的bfs方法体现了广度优先搜索的功能；dfs方法体现了深度优先搜索的功能。</p>
+<p>使用digInBFS方法进行大规模的bfs网页挖取推荐信息功能。</p>
+<p>使用digInDFS方法进行大规模的dfs网页挖取推荐信息功能。</p>
+<p>我用max_count限制广度优先搜索搜索到的关键词的最大数量，用max_depth限制搜索的深度。大家可以根据自己的需求更改这两个常量。</p>
+<p>用HashMap来记录得到的关键词。</p>
+<p>代码如下：</p>
+
+<pre><code><span style="color: #0000FF; ">import</span>&nbsp;java.util.HashMap;
+<span style="color: #0000FF; ">import</span>&nbsp;java.util.Iterator;
+<span style="color: #0000FF; ">import</span>&nbsp;java.util.LinkedList;
+<span style="color: #0000FF; ">import</span>&nbsp;java.util.Queue;
+
+
+<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">class</span>&nbsp;RelateDigger&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;HashMap&nbsp;&lt;String,Integer&gt;&nbsp;map;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">private</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">final</span>&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;max_count&nbsp;=&nbsp;100;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">private</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;count;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">private</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">final</span>&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;max_depth&nbsp;=&nbsp;3;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">private</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;init()&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count&nbsp;=&nbsp;0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;HashMap&lt;String,&nbsp;Integer&gt;();
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">private</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;dfs(String&nbsp;u,&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;depth)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("digging&nbsp;in&nbsp;"&nbsp;+&nbsp;u);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String[]&nbsp;res&nbsp;=&nbsp;FindRelate.getRelate(u);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;n&nbsp;=&nbsp;res.length;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">for</span>(<span style="color: #0000FF; ">int</span>&nbsp;i=0;i&lt;n;i++)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;v&nbsp;=&nbsp;res[i];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(map.containsKey(v))&nbsp;<span style="color: #0000FF; ">continue</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.put(v,&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;Integer(1));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(depth&nbsp;&gt;=&nbsp;max_depth)&nbsp;<span style="color: #0000FF; ">return</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dfs(v,&nbsp;depth+1);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">return</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;digInDFS(String&nbsp;word)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.put(word,&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;Integer(1));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dfs(word,&nbsp;0);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Iterator&lt;String&gt;&nbsp;iter&nbsp;=&nbsp;map.keySet().iterator();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>(iter.hasNext())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;key&nbsp;=&nbsp;iter.next();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.print(key);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(iter.hasNext())&nbsp;System.out.print(",");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">private</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;bfs(String&nbsp;u)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Queue&lt;String&gt;&nbsp;queue&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;LinkedList&lt;String&gt;();&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue.offer(u);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>((u=queue.poll())!=<span style="color: #0000FF; ">null</span>){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println("digging&nbsp;in&nbsp;"&nbsp;+&nbsp;u);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String[]&nbsp;res&nbsp;=&nbsp;FindRelate.getRelate(u);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;n&nbsp;=&nbsp;res.length;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">for</span>(<span style="color: #0000FF; ">int</span>&nbsp;i=0;i&lt;n;i++)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;v&nbsp;=&nbsp;res[i];
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(map.containsKey(v))&nbsp;<span style="color: #0000FF; ">continue</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.put(v,&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;Integer(1));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count&nbsp;++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue.offer(v);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(count&nbsp;&gt;=&nbsp;max_count)&nbsp;<span style="color: #0000FF; ">return</span>;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;digInBFS(String&nbsp;word)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.put(word,&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;Integer(1));
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count&nbsp;++;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfs(word);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Iterator&lt;String&gt;&nbsp;iter&nbsp;=&nbsp;map.keySet().iterator();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>(iter.hasNext())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;key&nbsp;=&nbsp;iter.next();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.print(key);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(iter.hasNext())&nbsp;System.out.print(",");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digInDFS("一句话木马");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digInBFS("珠穆朗玛峰");
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}</code></pre>
+
+<p>其中digInDFS得到的结果为：</p>
+<p>null,中国十大最难懂方言,必应词典,盗号木马,震荡波病毒,充值软件,盗号,网络神偷,塔佐蠕虫,中越黑客大战,黑客教程,蛀船虫,中国黑客联盟,小球病毒,宏病毒,中华吸血鬼,特洛伊木马,qq木马,鬼影病毒,后门木马,动漫日语,中国红客联盟,CIH病毒,李俊,有道词典,黑光病毒,伯乐木马,百度杀毒,手机透视器,黑客教父,qq盗号木马,机器狗病毒,米特尼克,qq枪手,冰河木马,c病毒,火焰病毒,g病毒,免费黑客网,百度翻译,华夏黑客联盟,广外女生木马,oldboot,cih病毒,特洛伊:木马屠城,玻璃蛇,网游大盗,学术翻译,灰鸽子木马,三角木马,熊猫烧香,女巫的椅子,江民炸弹,黑客工具,网上学英语,米米病毒,金山词霸,灰鸽子远程控制软件,莫里斯蠕虫,百度卫士,僵尸世界大战2,远程控制软件,悬玉环,食骨蠕虫,千斤顶,超级工厂病毒,灰鸽子,灵格斯,磁碟机病毒,骑木马驴,机器狗,震荡波,幸运破解器,黑客基地,维罗妮卡病毒,nabau,一句话木马,蠕虫病毒,冲击波病毒,黑客技术教程,大小姐木马,木马病毒,大麻病毒,不死木马,2001中美黑客大战,下村勉,trojan.generic,金猪报喜,qq尾巴,欢乐时光病毒,geohot,asp木马,手机骷髅病毒,中国鹰派,世界十大黑客,海词词典,黑客,王江民,潘多拉,杀毒软件,citrus,qq大盗,计算机病毒,g幼体,罗塞塔石碑,黑客技术,卡巴斯基免费版,丧尸,万能登陆器,高危型人乳头瘤病毒,铁莲花</p>
+<p>digInBFS得到的结果为：</p>
+<p>德令哈外星人遗址,百慕大三角,麦田怪圈,中国三大海峡,太阳墓,中国四大无人区,海底金字塔,中国最美十大名山,中国梯,巴黎性博物馆,中国死海,玫瑰湖,天门山,大蓝洞,贡嘎山,51区,西藏,普罗旺斯,中华十大名山,山西十大景区,克尔黑洞,暗物质,美国大峡谷空中走廊,魔鬼城,安纳布尔纳峰,羌塘,哭岛,全球被遗弃的31个景点,外星人,白洞,史瓦西黑洞,罗布泊,中国五大淡水湖,恐怖谷理论,道教四大名山,性博物馆,托木尔峰,中国四大名塔,幽灵岛,乞力马扎罗山,霍金,四大道教名山,喜马拉雅山脉,怪坡,黑洞,可可西里,无底洞,毛里求斯,藏王,中国四大古镇,藏北无人区,巧克力山,玉珠峰,撒哈拉之眼,大西国,爱因斯坦,奥林匹斯山,黄泉大道,天门山玻璃栈道,球状闪电,帕巴拉神庙,中华侏罗纪公园,凤凰山ufo事件,神农架,卡瓦格博,中国十大古城,珠峰大本营,亚特兰蒂斯,昆仑山死亡谷,查亚峰,魔鬼塔,巨人之路,贵州时光隧道,潘洛斯阶梯,处女峰,怒江72拐,希勒湖,乔戈里峰,倒悬空寺,鱼人岛,慕士塔格峰,日本龙三角,地心人,列宁峰,全球十大惊悚地点,不可能图形,死亡谷,巴比伦通天塔,珠穆朗玛峰,马尔代夫太阳岛,天下第一桥,蓝洞,9.8新疆ufo事件,沈阳怪坡,雁荡山,中国四大古城,四姑娘山,三山五岳,墨脱水电站,黑林错觉</p>
+
+		</section>
+	</div>
+</body>
+</html>

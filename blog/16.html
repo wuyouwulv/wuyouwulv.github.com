@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>HTML5 获取鼠标在画布上的坐标</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+		
+<h3>HTML5 获取鼠标在画布上的坐标</h3>
+		
+<script type="text/javascript"> 
+function cnvs_getCoordinates(e)
+{
+x=e.clientX;
+y=e.clientY;
+document.getElementById("xycoordinates").innerHTML="Coordinates: (" + x + "," + y + ")";
+}
+ 
+function cnvs_clearCoordinates()
+{
+document.getElementById("xycoordinates").innerHTML="";
+}
+</script>
+</head>
+
+<body style="margin:0px;">
+
+<p>把鼠标悬停在下面的矩形上可以看到坐标：</p>
+
+<div id="coordiv" style="float:left;width:199px;height:99px;border:1px solid #c3c3c3" onmousemove="cnvs_getCoordinates(event)" onmouseout="cnvs_clearCoordinates()"></div>
+<br />
+<br />
+<br />
+<div id="xycoordinates"></div>
+		
+<p>参考资料：<a href="http://www.w3school.com.cn/html5/html_5_canvas.asp" target="_blank">HTML5 画布</a></p>
+		</section>
+	</div>
+</body>
+</html>

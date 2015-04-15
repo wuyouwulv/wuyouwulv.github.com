@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>Java实现图片下载功能</title>
+</head>
+<body onload="startTime()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+
+<h3>Java实现图片下载功能</h3>
+
+<p>ImageDownload类中的download方法用于下载url对应的图片并保存在特定的本地目录上。代码如下：
+</p>
+<pre><code><span style="color: #0000FF; ">import</span>&nbsp;java.io.File;
+<span style="color: #0000FF; ">import</span>&nbsp;java.io.FileOutputStream;
+<span style="color: #0000FF; ">import</span>&nbsp;java.io.InputStream;
+<span style="color: #0000FF; ">import</span>&nbsp;java.io.OutputStream;
+<span style="color: #0000FF; ">import</span>&nbsp;java.net.URL;
+<span style="color: #0000FF; ">import</span>&nbsp;java.net.URLConnection;
+
+
+<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">class</span>&nbsp;ImageDownload&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;download(String&nbsp;urlString,&nbsp;String&nbsp;filename)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL&nbsp;url&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;URL(urlString);&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;构造URL&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URLConnection&nbsp;con&nbsp;=&nbsp;url.openConnection();&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;打开链接</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;con.setConnectTimeout(5*1000);&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">设置请求超时为5s&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InputStream&nbsp;is&nbsp;=&nbsp;con.getInputStream();&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;输入流&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">byte</span>[]&nbsp;bs&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;<span style="color: #0000FF; ">byte</span>[1024];&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;1K的数据缓冲&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;len;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;读取到的数据长度&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">int</span>&nbsp;i&nbsp;=&nbsp;filename.length();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">for</span>(i--;i&gt;=0&nbsp;&amp;&amp;&nbsp;filename.charAt(i)&nbsp;!=&nbsp;'\\'&nbsp;&amp;&amp;&nbsp;filename.charAt(i)&nbsp;!=&nbsp;'/';i--);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;s_dir&nbsp;=&nbsp;filename.substring(0,&nbsp;i);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File&nbsp;dir&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;File(s_dir);&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;输出的文件流&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">if</span>(!dir.exists()){&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dir.mkdirs();&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OutputStream&nbsp;os&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;FileOutputStream(filename);&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;开始读取&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">while</span>&nbsp;((len&nbsp;=&nbsp;is.read(bs))&nbsp;!=&nbsp;-1)&nbsp;{&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.write(bs,&nbsp;0,&nbsp;len);&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #008000; ">//</span><span style="color: #008000; ">&nbsp;完毕，关闭所有链接&nbsp;&nbsp;</span><span style="color: #008000; ">
+</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;os.close();&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is.close();&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000FF; ">public</span>&nbsp;<span style="color: #0000FF; ">static</span>&nbsp;<span style="color: #0000FF; ">void</span>&nbsp;main(String[]&nbsp;args)&nbsp;<span style="color: #0000FF; ">throws</span>&nbsp;Exception&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;download("http://gi4.md.alicdn.com/bao/uploaded/i4/TB1aRpnHpXXXXaNXVXXXXXXXXXX_!!0-item_pic.jpg",&nbsp;"d:\\qfour\\sample.jpg");
+&nbsp;&nbsp;&nbsp;&nbsp;}
+} &nbsp;</code></pre>
+
+		</section>
+	</div>
+</body>
+</html>

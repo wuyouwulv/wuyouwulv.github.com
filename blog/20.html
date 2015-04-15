@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>HTML5 用户访问次数统计</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+
+<h3>HTML5 用户访问次数统计</h3>		
+
+<script type="text/javascript">
+if (localStorage.pagecount)
+  {
+  localStorage.pagecount=Number(localStorage.pagecount) +1;
+  }
+else
+  {
+  localStorage.pagecount=1;
+  }
+document.write("Visits "+ localStorage.pagecount + " time(s).");
+</script>
+
+<br />
+<p><a href="http://www.w3school.com.cn/html5/html_5_webstorage.asp" target="_blank">更多关于HTML5 Web存储的内容</a></p>
+
+		</section>
+	</div>
+</body>
+</html>

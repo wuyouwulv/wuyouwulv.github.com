@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>Java中HashMap的两种遍历方式</title>
+</head>
+<body onload="startTime()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+
+<h3>Java中HashMap的两种遍历方式</h3>
+
+<p>第一种:</p>
+<pre><code>Map&nbsp;map&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;HashMap();
+Iterator&nbsp;iter&nbsp;=&nbsp;map.entrySet().iterator();
+<span style="color: #0000FF; ">while</span>&nbsp;(iter.hasNext())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;Map.Entry&nbsp;entry&nbsp;=&nbsp;(Map.Entry)&nbsp;iter.next();
+&nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;key&nbsp;=&nbsp;entry.getKey();
+&nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;val&nbsp;=&nbsp;entry.getValue();
+}</code></pre>
+<p>第二种:</p>
+<pre><code>Map&nbsp;map&nbsp;=&nbsp;<span style="color: #0000FF; ">new</span>&nbsp;HashMap();
+Iterator&nbsp;iter&nbsp;=&nbsp;map.keySet().iterator();
+<span style="color: #0000FF; ">while</span>&nbsp;(iter.hasNext())&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;key&nbsp;=&nbsp;iter.next();
+&nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;val&nbsp;=&nbsp;map.get(key);
+}</code></pre>
+其中，第一种方法效率较高。
+
+		</section>
+	</div>
+</body>
+</html>
+

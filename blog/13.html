@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>HTML5 视频</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+		
+		<h3>HTML5 视频</h3>
+		
+		<video id="myvideo" width="600" height="480">
+			<!--source src="../video/1.ogg" type="video/ogg"-->
+			<source src="../video/1.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		</video><br />
+		<button id="playpause" onclick="playPause()">播放</button> 
+		<button onclick="makeBig()">大</button>
+		<button onclick="makeNormal()">中</button>
+		<button onclick="makeSmall()">小</button><br />
+		
+		<script type="text/javascript">
+		var myVideo=document.getElementById("myvideo");
+
+		function playPause()
+		{ 
+			if (myVideo.paused) { 
+				myVideo.play();
+				document.getElementById("playpause").innerHTML = "暂停";
+			}
+			else {
+				myVideo.pause(); 
+				document.getElementById("playpause").innerHTML = "播放";
+			}
+		} 
+
+		function makeBig()
+		{ 
+			myVideo.width=600; 
+		} 
+
+		function makeSmall()
+		{ 
+			myVideo.width=320; 
+		} 
+
+		function makeNormal()
+		{ 
+			myVideo.width=420; 
+		} 
+		</script> 
+		
+		<p>参考资料：<a href="http://www.w3school.com.cn/html5/html_5_video.asp" target="_blank">HTML 5 音频</a></p>
+		
+		</section>
+	</div>
+</body>
+</html>

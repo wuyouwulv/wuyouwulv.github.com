@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../css/stylesheet.css" media="screen">
+	<title>JS创建一个欢迎Cookie</title>
+<script type="text/javascript">
+function getCookie(c_name)
+{
+if (document.cookie.length>0)
+{ 
+c_start=document.cookie.indexOf(c_name + "=")
+if (c_start!=-1)
+{ 
+c_start=c_start + c_name.length+1 
+c_end=document.cookie.indexOf(";",c_start)
+if (c_end==-1) c_end=document.cookie.length
+return unescape(document.cookie.substring(c_start,c_end))
+} 
+}
+return ""
+}
+
+function setCookie(c_name,value,expiredays)
+{
+var exdate=new Date()
+exdate.setDate(exdate.getDate()+expiredays)
+document.cookie=c_name+ "=" +escape(value)+
+((expiredays==null) ? "" : "; expires="+exdate.toGMTString())
+}
+
+function checkCookie()
+{
+username=getCookie('username')
+if (username!=null && username!="")
+  {alert('Welcome again '+username+'!')}
+else 
+  {
+  username=prompt('Please enter your name:',"")
+  if (username!=null && username!="")
+    {
+    setCookie('username',username,365)
+    }
+  }
+}
+</script>
+</head>
+<body onLoad="checkCookie()">
+	<header>
+		<div class="container">
+			<h1><a style="text-decoration: none; color:#eaeaea;" href="../index.html">无忧无虑</a></h1>
+		</div>
+	</header>
+	<!--script type="text/javascript" src="js/changebkg.js"></script-->
+	<div class="container">
+		<section id="main_content">
+		<h3>JS创建一个欢迎Cookie</h3>
+		<p>刷新查看</p>
+		</section>
+	</div>
+</body>
+</html>
+<!--可能有bug-->
