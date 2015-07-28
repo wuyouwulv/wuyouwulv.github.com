@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap:http://wuyouwulv.github.io/sitemap.xml
